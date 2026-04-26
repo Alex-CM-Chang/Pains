@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adelphi｜創作者行為與 AI 自動化研究報告 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0C0C14;--bg2:#111120;--bg3:#161628;--card:#141422;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --orange:#FF6B35;--cyan:#00D4FF;--violet:#7C3AED;--teal:#0ABFA3;
+  --rose:#FF4E8B;--amber:#FFAD0D;--lime:#84CC16;--blue:#3B82F6;
+  --text:#F0EFE8;--text2:#9B9AA8;--text3:#54536A;
+  --f-disp:'Syne',sans-serif;--f-body:'IBM Plex Sans',sans-serif;--f-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--f-body);font-size:15px;line-height:1.65;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--orange);border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,12,20,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.nav-brand{font-family:var(--f-disp);font-weight:800;font-size:17px;color:var(--orange);letter-spacing:-0.5px;display:flex;align-items:center;gap:10px}
+.nav-brand em{font-style:normal;color:var(--text2);font-size:11px;font-family:var(--f-mono);font-weight:400}
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{color:var(--text3);text-decoration:none;font-size:11px;font-family:var(--f-mono);padding:5px 11px;border-radius:4px;transition:all .2s}
+.nav-links a:hover{color:var(--text);background:var(--border)}
+
+/* HERO */
+#hero{min-height:calc(100vh - 54px);display:flex;flex-direction:column;justify-content:center;position:relative;padding:80px 40px 60px;overflow:hidden;margin-top:54px}
+#hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,53,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,53,0.035) 1px,transparent 1px);background-size:56px 56px}
+#hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(transparent,var(--bg))}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.orb1{width:500px;height:500px;background:rgba(255,107,53,0.10);top:-120px;right:5%}
+.orb2{width:320px;height:320px;background:rgba(0,212,255,0.07);bottom:5%;left:8%}
+.orb3{width:280px;height:280px;background:rgba(124,58,237,0.09);top:50%;right:28%}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:1}
+.hero-eye{font-family:var(--f-mono);font-size:11px;color:var(--orange);letter-spacing:3px;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.hero-eye::before{content:'';display:block;width:28px;height:1px;background:var(--orange)}
+h1{font-family:var(--f-disp);font-size:clamp(40px,6vw,88px);font-weight:800;line-height:1.0;letter-spacing:-2.5px;margin-bottom:22px}
+h1 .or{color:var(--orange)}h1 .cy{color:var(--cyan)}
+.hero-sub{font-size:17px;color:var(--text2);max-width:580px;margin-bottom:52px;font-weight:300;line-height:1.7}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border2);border-radius:12px;overflow:hidden;max-width:860px}
+.stat-item{background:var(--card);padding:22px 20px;text-align:center}
+.stat-n{font-family:var(--f-disp);font-size:34px;font-weight:800;color:var(--orange);line-height:1;margin-bottom:7px}
+.stat-l{font-size:11px;color:var(--text3);font-family:var(--f-mono);line-height:1.4}
+
+/* TICKER */
+.ticker{background:var(--orange);padding:9px 0;overflow:hidden}
+.ticker-inner{display:flex;animation:tick 40s linear infinite;white-space:nowrap}
+.t-item{font-family:var(--f-mono);font-size:11.5px;font-weight:500;color:#1a0800;padding:0 48px;flex-shrink:0}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* PAGE SECTIONS */
+.page{padding:80px 40px;max-width:1200px;margin:0 auto}
+.full-bleed{background:var(--bg2);padding:80px 0}
+.full-bleed .page{padding-top:0;padding-bottom:0}
+
+/* SECTION HEADER */
+.sh{margin-bottom:44px}
+.sh-num{font-family:var(--f-mono);font-size:10px;color:var(--text3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px}
+.sh h2{font-family:var(--f-disp);font-size:clamp(26px,3.5vw,38px);font-weight:800;letter-spacing:-1px;line-height:1.1}
+.sh h2 .or{color:var(--orange)}.sh h2 .cy{color:var(--cyan)}.sh h2 .vi{color:var(--violet)}
+.sh p{margin-top:10px;color:var(--text2);max-width:620px;font-size:14px}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:26px}
+.card-title{font-family:var(--f-disp);font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px}
+
+/* KPI TILES */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:28px}
+.kpi{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:18px}
+.kpi-n{font-family:var(--f-disp);font-size:30px;font-weight:800;line-height:1;margin-bottom:5px}
+.kpi-d{font-size:11.5px;color:var(--text3);line-height:1.45}
+
+/* CHART BOX */
+.cbox{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:26px}
+.cbox h3{font-family:var(--f-disp);font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:18px}
+.cbox .ct{position:relative}
+.cbox .ct canvas{display:block}
+
+/* TABS */
+.tabs{display:inline-flex;gap:3px;background:var(--bg3);padding:3px;border-radius:7px;margin-bottom:22px}
+.tab{padding:7px 18px;border:none;background:transparent;color:var(--text3);font-family:var(--f-body);font-size:12.5px;font-weight:500;border-radius:5px;cursor:pointer;transition:all .2s}
+.tab.on{background:var(--orange);color:#fff}
+
+/* PAIN BARS */
+.pain-list{display:flex;flex-direction:column;gap:10px}
+.p-item{display:flex;align-items:center;gap:12px}
+.p-rank{font-family:var(--f-mono);font-size:10px;color:var(--text3);width:18px;text-align:right;flex-shrink:0}
+.p-label{font-size:12.5px;width:190px;flex-shrink:0}
+.p-bar-bg{flex:1;height:7px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.p-bar{height:100%;border-radius:3px;transition:width 1.2s ease}
+.p-score{font-family:var(--f-mono);font-size:11px;color:var(--text2);width:32px;text-align:right;flex-shrink:0}
+
+/* INSIGHT */
+.insight{border-left:3px solid var(--orange);padding:14px 18px;background:rgba(255,107,53,0.06);border-radius:0 8px 8px 0;margin:20px 0}
+.insight p{font-size:13.5px;color:var(--text2);font-style:italic}
+.insight strong{color:var(--text);font-style:normal}
+
+/* LEGEND */
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}
+.leg{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text2)}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--f-mono);font-size:10px;color:var(--text3);text-align:left;padding:10px 14px;border-bottom:1px solid var(--border2);text-transform:uppercase;letter-spacing:1px}
+td{padding:11px 14px;font-size:12.5px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.015)}
+
+/* BADGE */
+.badge{display:inline-block;font-size:10px;font-family:var(--f-mono);padding:2px 8px;border-radius:20px}
+.b-red{background:rgba(255,78,139,0.15);color:var(--rose)}
+.b-amber{background:rgba(255,173,13,0.15);color:var(--amber)}
+.b-green{background:rgba(132,204,22,0.15);color:var(--lime)}
+.b-orange{background:rgba(255,107,53,0.15);color:var(--orange)}
+.b-cyan{background:rgba(0,212,255,0.12);color:var(--cyan)}
+
+/* WORKFLOW CARDS */
+.wf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.wf-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;transition:border-color .2s,transform .2s;cursor:default}
+.wf-card:hover{border-color:rgba(255,107,53,0.5);transform:translateY(-2px)}
+.wf-n{font-family:var(--f-mono);font-size:10px;color:var(--orange);margin-bottom:8px}
+.wf-t{font-family:var(--f-disp);font-size:14px;font-weight:700;margin-bottom:7px}
+.wf-d{font-size:11.5px;color:var(--text2);line-height:1.5}
+.wf-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.tag{font-size:9.5px;font-family:var(--f-mono);padding:2px 7px;border-radius:20px;border:1px solid}
+.t-or{border-color:var(--orange);color:var(--orange)}
+.t-cy{border-color:var(--cyan);color:var(--cyan)}
+.t-vi{border-color:var(--violet);color:var(--violet)}
+.t-tl{border-color:var(--teal);color:var(--teal)}
+.t-rs{border-color:var(--rose);color:var(--rose)}
+.t-am{border-color:var(--amber);color:var(--amber)}
+
+/* PRIORITY MATRIX */
+.pmatrix{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border2);border-radius:12px;overflow:hidden;height:400px}
+.pm-cell{background:var(--card);padding:18px;position:relative;overflow:hidden}
+.pm-cell::before{position:absolute;font-size:80px;font-family:var(--f-disp);font-weight:800;opacity:0.04;right:-10px;top:-10px;line-height:1}
+.pm-q1::before{content:'①';color:var(--orange)}
+.pm-q2::before{content:'②';color:var(--lime)}
+.pm-q3::before{content:'③';color:var(--cyan)}
+.pm-q4::before{content:'④';color:var(--text3)}
+.pm-label{font-family:var(--f-mono);font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.pm-items{display:flex;flex-direction:column;gap:5px}
+.pm-item{font-size:11.5px;padding:4px 9px;border-radius:4px;background:var(--bg3)}
+.pm-axis{display:flex;justify-content:space-between;margin-top:6px}
+.pm-axis span{font-size:10px;font-family:var(--f-mono);color:var(--text3)}
+
+/* HEATMAP */
+.hmap{display:flex;flex-direction:column;gap:3px}
+.hmap-head{display:grid;grid-template-columns:130px repeat(7,1fr);gap:3px;margin-bottom:2px}
+.hmap-col-label{font-size:10px;font-family:var(--f-mono);color:var(--text3);text-align:center;padding:4px 0}
+.hmap-row{display:grid;grid-template-columns:130px repeat(7,1fr);gap:3px;align-items:center}
+.hmap-row-label{font-size:10.5px;color:var(--text2);padding-right:8px;text-align:right;font-family:var(--f-mono)}
+.hmap-cell{height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--f-mono);color:rgba(255,255,255,0.5);transition:opacity .2s;cursor:default;text-align:center;padding:2px}
+.hmap-cell:hover{opacity:.7}
+.h0{background:var(--bg3)}
+.h1{background:rgba(255,107,53,0.12)}
+.h2{background:rgba(255,107,53,0.25)}
+.h3{background:rgba(255,107,53,0.42)}
+.h4{background:rgba(255,107,53,0.62)}
+.h5{background:rgba(255,107,53,0.85);color:rgba(0,0,0,0.7)}
+
+/* COST COMPARE */
+.cost-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:32px;align-items:start}
+.cost-col{display:flex;flex-direction:column;gap:10px}
+.cost-col-header{font-family:var(--f-disp);font-size:16px;font-weight:700;margin-bottom:6px}
+.cost-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px}
+.cost-item-name{font-size:12.5px}
+.cost-item-price{font-family:var(--f-mono);font-size:13px;font-weight:500}
+.cost-total{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:6px;margin-top:6px;font-family:var(--f-disp);font-size:16px;font-weight:700}
+.cost-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.vs-badge{background:var(--bg3);border:2px solid var(--orange);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:12px;color:var(--orange);font-weight:500}
+.savings-box{background:linear-gradient(135deg,rgba(132,204,22,0.1),rgba(10,191,163,0.1));border:1px solid rgba(132,204,22,0.3);border-radius:10px;padding:18px;text-align:center;margin-top:16px}
+.savings-n{font-family:var(--f-disp);font-size:36px;font-weight:800;color:var(--lime);line-height:1}
+.savings-d{font-size:12px;color:var(--text2);margin-top:4px}
+
+/* BIG NUMBERS */
+.big-n{font-family:var(--f-disp);font-size:clamp(44px,6vw,72px);font-weight:800;letter-spacing:-2px;line-height:1}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 40px;text-align:center}
+footer p{font-family:var(--f-mono);font-size:10.5px;color:var(--text3)}
+footer strong{color:var(--orange)}
+
+/* ANIMATION */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeUp .55s ease both}
+.fu1{animation-delay:.1s}.fu2{animation-delay:.2s}.fu3{animation-delay:.3s}.fu4{animation-delay:.4s}
+
+/* Pill */
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);border-radius:20px;padding:4px 12px;font-size:11px;font-family:var(--f-mono);color:var(--orange)}
+.dot-pulse{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+@media(max-width:900px){
+  nav{padding:0 16px}
+  .nav-links{display:none}
+  .page{padding:60px 16px}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  #hero{padding:60px 16px 50px}
+  .cost-vs{grid-template-columns:1fr;gap:16px}
+  .pmatrix{height:auto;min-height:400px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">ADELPHI <em>CREATOR INTELLIGENCE REPORT 2026</em></div>
+  <ul class="nav-links">
+    <li><a href="#market">市場</a></li>
+    <li><a href="#time">時間</a></li>
+    <li><a href="#pains">痛點</a></li>
+    <li><a href="#burnout">Burnout</a></li>
+    <li><a href="#of-econ">OF經濟</a></li>
+    <li><a href="#ai-sol">AI解方</a></li>
+    <li><a href="#workflows">工作流</a></li>
+    <li><a href="#cost">成本比較</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="hero-inner">
+    <div class="hero-eye fu fu1">ADELPHI x n8n &nbsp;·&nbsp; 創作者自動化研究報告</div>
+    <h1 class="fu fu2">創作者每天<br>只有 <span class="or">46%</span> 的<br>時間在<span class="cy">創作</span></h1>
+    <p class="hero-sub fu fu3">其餘 54% 被分發、行銷、客服與行政吞噬。<br>這份報告量化了這個問題——以及 AI 自動化能如何解決它。</p>
+    <div class="stat-strip fu fu4">
+      <div class="stat-item">
+        <div class="stat-n" data-count="200" data-suffix="億+">—</div>
+        <div class="stat-l">創作者經濟<br>市場規模（美元）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-n" data-count="90" data-suffix="%">—</div>
+        <div class="stat-l">創作者曾<br>經歷 Burnout</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-n" data-count="86" data-suffix="%">—</div>
+        <div class="stat-l">全球創作者<br>已採用生成式 AI</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-n" data-count="73" data-suffix="%">—</div>
+        <div class="stat-l">成人創作者<br>曾遭內容盜竊</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner"></div>
+</div>
+
+<!-- ============ SECTION 01: MARKET ============ -->
+<div id="market" class="full-bleed">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 01 — 市場概覽</div>
+    <h2>創作者經濟 <span class="or">已是</span> 兆元賽道</h2>
+    <p>2027 年 Goldman Sachs 預測 $4,800 億美元規模；AI 工具採用率以驚人速度上升，但多數創作者仍深陷工具碎片化困境。</p>
+  </div>
+  <div class="g2" style="margin-bottom:32px;align-items:stretch">
+    <div class="cbox">
+      <h3>全球創作者經濟市場規模（億美元）</h3>
+      <div class="ct" style="height:260px"><canvas id="marketChart"></canvas></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="kpi" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px">
+        <div class="kpi-n" style="color:var(--orange)">$2,040億</div>
+        <div class="kpi-d">2024年全球創作者經濟估值（SNS Insider）</div>
+      </div>
+      <div class="kpi" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px">
+        <div class="kpi-n" style="color:var(--cyan)">$4,800億</div>
+        <div class="kpi-d">2027年預測規模（Goldman Sachs），CAGR ~24%</div>
+      </div>
+      <div class="kpi" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px">
+        <div class="kpi-n" style="color:var(--lime)">3.03億</div>
+        <div class="kpi-d">全球創作者總數（Adobe），其中僅 4% 為年收 $10萬+ 的「職業創作者」</div>
+      </div>
+      <div class="kpi" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px">
+        <div class="kpi-n" style="color:var(--violet)">86%</div>
+        <div class="kpi-d">全球創作者已使用生成式 AI（Adobe Creators' Toolkit 2025，n=16,000）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">AI採用意願（Adobe 2025）</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px">自動化重複任務</span><span style="font-family:var(--f-mono);font-size:12px;color:var(--orange)">51%</span></div>
+          <div style="height:6px;background:var(--bg3);border-radius:3px"><div style="width:51%;height:100%;background:var(--orange);border-radius:3px"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px">腦力激盪/選題</span><span style="font-family:var(--f-mono);font-size:12px;color:var(--cyan)">50%</span></div>
+          <div style="height:6px;background:var(--bg3);border-radius:3px"><div style="width:50%;height:100%;background:var(--cyan);border-radius:3px"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px">數據洞察分析</span><span style="font-family:var(--f-mono);font-size:12px;color:var(--violet)">44%</span></div>
+          <div style="height:6px;background:var(--bg3);border-radius:3px"><div style="width:44%;height:100%;background:var(--violet);border-radius:3px"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px">內容草稿撰寫</span><span style="font-family:var(--f-mono);font-size:12px;color:var(--teal)">38%</span></div>
+          <div style="height:6px;background:var(--bg3);border-radius:3px"><div style="width:38%;height:100%;background:var(--teal);border-radius:3px"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">平台平均年收（NeoReach 2025）</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:80px;font-size:11.5px;color:var(--text2)">Instagram</div>
+          <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px"><div style="width:100%;height:100%;background:var(--rose);border-radius:3px"></div></div>
+          <div style="font-family:var(--f-mono);font-size:11px;color:var(--rose);width:50px;text-align:right">$81,700</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:80px;font-size:11.5px;color:var(--text2)">YouTube</div>
+          <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px"><div style="width:76%;height:100%;background:var(--amber);border-radius:3px"></div></div>
+          <div style="font-family:var(--f-mono);font-size:11px;color:var(--amber);width:50px;text-align:right">$62,400</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:80px;font-size:11.5px;color:var(--text2)">OnlyFans</div>
+          <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px"><div style="width:74%;height:100%;background:var(--orange);border-radius:3px"></div></div>
+          <div style="font-family:var(--f-mono);font-size:11px;color:var(--orange);width:50px;text-align:right">$60,700</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:80px;font-size:11.5px;color:var(--text2)">TikTok</div>
+          <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px"><div style="width:54%;height:100%;background:var(--cyan);border-radius:3px"></div></div>
+          <div style="font-family:var(--f-mono);font-size:11px;color:var(--cyan);width:50px;text-align:right">$44,250</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:80px;font-size:11.5px;color:var(--text2)">Twitch</div>
+          <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px"><div style="width:31%;height:100%;background:var(--violet);border-radius:3px"></div></div>
+          <div style="font-family:var(--f-mono);font-size:11px;color:var(--violet);width:50px;text-align:right">$25,600</div>
+        </div>
+      </div>
+      <div class="insight" style="margin-top:16px;margin-bottom:0"><p style="font-size:12px">⚠ 僅 <strong>12%</strong> 全職創作者年收超過 $5 萬美元（Linktree 2022）</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">創作者收入分布</div>
+      <div class="ct" style="height:180px"><canvas id="incomeDonutChart"></canvas></div>
+      <div class="legend" style="margin-top:10px;flex-direction:column;gap:5px">
+        <div class="leg"><div class="leg-dot" style="background:#FF6B35"></div>年收 >$10萬 (4%)</div>
+        <div class="leg"><div class="leg-dot" style="background:#FFAD0D"></div>$5萬-$10萬 (8%)</div>
+        <div class="leg"><div class="leg-dot" style="background:#7C3AED"></div>$1萬-$5萬 (22%)</div>
+        <div class="leg"><div class="leg-dot" style="background:#374151"></div>年收 <$1萬 (66%)</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 02: TIME ============ -->
+<div id="time">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 02 — 時間分配</div>
+    <h2>創作者<span class="or">真正的工作日</span>長什麼樣？</h2>
+    <p>全職創作者每週投入 20–40 小時，但能真正用在內容創作的不足一半。行政、行銷、社群管理才是最大時間黑洞。</p>
+  </div>
+  <div class="g2" style="align-items:start;margin-bottom:32px">
+    <div class="cbox">
+      <h3>創作者時間分配（Linktree / Epidemic Sound 2025）</h3>
+      <div class="ct" style="height:280px"><canvas id="timeChart"></canvas></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">每週工時基準（Linktree 2022）</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg3);border-radius:6px">
+            <span style="font-size:12.5px">每週 ≤5 小時</span>
+            <span style="font-family:var(--f-mono);color:var(--text2);font-size:12px">43%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg3);border-radius:6px">
+            <span style="font-size:12.5px">每週 5–20 小時</span>
+            <span style="font-family:var(--f-mono);color:var(--cyan);font-size:12px">27%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);border-radius:6px">
+            <span style="font-size:12.5px">每週 20+ 小時（有變現者）</span>
+            <span style="font-family:var(--f-mono);color:var(--orange);font-size:12px">49%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg3);border-radius:6px">
+            <span style="font-size:12.5px">每週 40+ 小時（全職）</span>
+            <span style="font-family:var(--f-mono);color:var(--rose);font-size:12px">5%</span>
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <p>單篇貼文平均耗時 <strong>4–8 小時</strong>生產（NeoReach 2025）；<strong>50%</strong> 創作者無任何團隊支援——這是 Adelphi 最核心的市場缺口。</p>
+      </div>
+      <div class="insight" style="border-color:var(--cyan);background:rgba(0,212,255,0.05)">
+        <p>YouTube 基準：<strong>每 1 分鐘成片 = 45–60 分鐘剪輯</strong>。一支 10 分鐘影片要吃掉 8–25 小時剪輯工時。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEATMAP -->
+  <div class="cbox">
+    <h3>創作者典型工作週 — 任務強度熱力圖</h3>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:18px;font-family:var(--f-mono)">橫列 = 任務類型｜橫欄 = 一週七天｜顏色深度 = 時間投入強度</p>
+    <div class="hmap" id="heatmap"></div>
+    <div class="legend" style="margin-top:16px">
+      <div class="leg"><div class="leg-dot" style="background:var(--bg3);border:1px solid var(--border)"></div>無</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(255,107,53,0.15)"></div>輕度</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(255,107,53,0.35)"></div>中度</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(255,107,53,0.55)"></div>高度</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(255,107,53,0.80)"></div>非常高</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(255,107,53,0.95)"></div>最高強度</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 03: PAINS ============ -->
+<div id="pains" class="full-bleed">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 03 — 痛點分析</div>
+    <h2>創作者最深層的<span class="or">痛點地圖</span></h2>
+    <p>主流創作者（YouTube/TikTok/IG）與成人創作者（OnlyFans/Fansly）的痛點結構高度相似，但成人創作者的強度與複雜度更高，且單位可解決的 ROI 也更大。</p>
+  </div>
+
+  <div class="tabs" id="pain-tabs">
+    <button class="tab on" data-target="pain-main">主流創作者</button>
+    <button class="tab" data-target="pain-adult">成人創作者</button>
+  </div>
+
+  <div id="pain-main">
+    <div class="g2" style="align-items:start">
+      <div class="cbox">
+        <h3>主流創作者前10大痛點（嚴重度 × 頻率評分 / 10）</h3>
+        <div class="ct" style="height:320px"><canvas id="painMainChart"></canvas></div>
+      </div>
+      <div>
+        <div class="cbox">
+          <h3>痛點嚴重度明細</h3>
+          <div class="pain-list">
+            <div class="p-item"><div class="p-rank">1</div><div class="p-label">演算法依賴/曝光焦慮</div><div class="p-bar-bg"><div class="p-bar" style="width:92%;background:var(--rose)"></div></div><div class="p-score" style="color:var(--rose)">9.2</div></div>
+            <div class="p-item"><div class="p-rank">2</div><div class="p-label">Burnout / 無法斷線</div><div class="p-bar-bg"><div class="p-bar" style="width:90%;background:var(--orange)"></div></div><div class="p-score" style="color:var(--orange)">9.0</div></div>
+            <div class="p-item"><div class="p-rank">3</div><div class="p-label">剪輯黑洞</div><div class="p-bar-bg"><div class="p-bar" style="width:85%;background:var(--orange)"></div></div><div class="p-score" style="color:var(--orange)">8.5</div></div>
+            <div class="p-item"><div class="p-rank">4</div><div class="p-label">Caption/SEO重複勞動</div><div class="p-bar-bg"><div class="p-bar" style="width:78%;background:var(--amber)"></div></div><div class="p-score" style="color:var(--amber)">7.8</div></div>
+            <div class="p-item"><div class="p-rank">5</div><div class="p-label">跨平台再製負擔</div><div class="p-bar-bg"><div class="p-bar" style="width:75%;background:var(--amber)"></div></div><div class="p-score" style="color:var(--amber)">7.5</div></div>
+            <div class="p-item"><div class="p-rank">6</div><div class="p-label">發文一致性壓力</div><div class="p-bar-bg"><div class="p-bar" style="width:72%;background:var(--cyan)"></div></div><div class="p-score" style="color:var(--cyan)">7.2</div></div>
+            <div class="p-item"><div class="p-rank">7</div><div class="p-label">負評/騷擾DM管理</div><div class="p-bar-bg"><div class="p-bar" style="width:68%;background:var(--cyan)"></div></div><div class="p-score" style="color:var(--cyan)">6.8</div></div>
+            <div class="p-item"><div class="p-rank">8</div><div class="p-label">指標綁架自我價值</div><div class="p-bar-bg"><div class="p-bar" style="width:65%;background:var(--teal)"></div></div><div class="p-score" style="color:var(--teal)">6.5</div></div>
+            <div class="p-item"><div class="p-rank">9</div><div class="p-label">收入波動不穩</div><div class="p-bar-bg"><div class="p-bar" style="width:62%;background:var(--teal)"></div></div><div class="p-score" style="color:var(--teal)">6.2</div></div>
+            <div class="p-item"><div class="p-rank">10</div><div class="p-label">技能缺口</div><div class="p-bar-bg"><div class="p-bar" style="width:58%;background:var(--lime)"></div></div><div class="p-score" style="color:var(--lime)">5.8</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="pain-adult" style="display:none">
+    <div class="cbox" style="margin-bottom:20px">
+      <h3>成人創作者前15大痛點（嚴重度評估）</h3>
+      <div class="ct" style="height:400px"><canvas id="painAdultChart"></canvas></div>
+    </div>
+    <div class="g3">
+      <div class="card">
+        <div class="card-title" style="color:var(--rose)">🔴 致命級（9–10）</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="padding:8px 10px;background:rgba(255,78,139,0.07);border-radius:5px;font-size:12px">DM過載/個人化規模化 — <strong style="color:var(--rose)">9.8</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,78,139,0.07);border-radius:5px;font-size:12px">銀行/支付商摩擦 — <strong style="color:var(--rose)">9.8</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,78,139,0.07);border-radius:5px;font-size:12px">身份保護/doxxing — <strong style="color:var(--rose)">9.5</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,78,139,0.07);border-radius:5px;font-size:12px">24/7 Burnout — <strong style="color:var(--rose)">9.5</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,78,139,0.07);border-radius:5px;font-size:12px">內容盜竊/DMCA — <strong style="color:var(--rose)">9.2</strong></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--amber)">🟡 高危級（8–9）</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="padding:8px 10px;background:rgba(255,173,13,0.07);border-radius:5px;font-size:12px">平台合規波動 — <strong style="color:var(--amber)">9.0</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,173,13,0.07);border-radius:5px;font-size:12px">Whale集中/收入波動 — <strong style="color:var(--amber)">9.0</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,173,13,0.07);border-radius:5px;font-size:12px">心理健康/寄生社交 — <strong style="color:var(--amber)">8.5</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,173,13,0.07);border-radius:5px;font-size:12px">跨平台SFW行銷限制 — <strong style="color:var(--amber)">8.5</strong></div>
+          <div style="padding:8px 10px;background:rgba(255,173,13,0.07);border-radius:5px;font-size:12px">Welcome Funnel流失 — <strong style="color:var(--amber)">8.0</strong></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--lime)">🟢 中級（7–8）</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="padding:8px 10px;background:rgba(132,204,22,0.07);border-radius:5px;font-size:12px">PPV定價/解鎖率優化 — <strong style="color:var(--lime)">8.0</strong></div>
+          <div style="padding:8px 10px;background:rgba(132,204,22,0.07);border-radius:5px;font-size:12px">稅務複雜度 — <strong style="color:var(--lime)">7.5</strong></div>
+          <div style="padding:8px 10px;background:rgba(132,204,22,0.07);border-radius:5px;font-size:12px">經紀公司/OFMA動態 — <strong style="color:var(--lime)">7.5</strong></div>
+          <div style="padding:8px 10px;background:rgba(132,204,22,0.07);border-radius:5px;font-size:12px">客製訂單管理 — <strong style="color:var(--lime)">7.0</strong></div>
+          <div style="padding:8px 10px;background:rgba(132,204,22,0.07);border-radius:5px;font-size:12px">多平台一致性 — <strong style="color:var(--lime)">7.0</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 04: BURNOUT ============ -->
+<div id="burnout">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 04 — Burnout 危機</div>
+    <h2>這不只是<span class="or">疲勞</span>，是產業性<span class="cy">危機</span></h2>
+    <p>多項研究指向同一個結論：創作者不缺熱情，缺的是把熱情與永無止盡的非創作任務隔離的工具。</p>
+  </div>
+  <div class="g2" style="margin-bottom:28px;align-items:start">
+    <div class="cbox">
+      <h3>Burnout 壓力來源分布（Vibely 2021，n=1,000+）</h3>
+      <div class="ct" style="height:280px"><canvas id="burnoutChart"></canvas></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="kpi" style="background:rgba(255,78,139,0.08);border-color:rgba(255,78,139,0.2)">
+          <div class="kpi-n" style="color:var(--rose)">90%</div>
+          <div class="kpi-d">創作者曾經歷 Burnout（Vibely 2021）</div>
+        </div>
+        <div class="kpi" style="background:rgba(255,107,53,0.08);border-color:rgba(255,107,53,0.2)">
+          <div class="kpi-n" style="color:var(--orange)">71%</div>
+          <div class="kpi-d">考慮過放棄創作</div>
+        </div>
+        <div class="kpi" style="background:rgba(255,173,13,0.08);border-color:rgba(255,173,13,0.2)">
+          <div class="kpi-n" style="color:var(--amber)">73%</div>
+          <div class="kpi-d">2024年仍報告 Burnout（Awin 2024）</div>
+        </div>
+        <div class="kpi" style="background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.2)">
+          <div class="kpi-n" style="color:var(--violet)">41%</div>
+          <div class="kpi-d">因 Burnout 難以維持發文一致性</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">平台 Burnout 指數（2024，最嚴重）</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:80px;font-size:12px">Instagram</span><div style="flex:1;height:7px;background:var(--bg3);border-radius:3px"><div style="width:88%;height:100%;background:var(--rose);border-radius:3px"></div></div><span style="font-family:var(--f-mono);font-size:11px;color:var(--rose)">88%</span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:80px;font-size:12px">TikTok</span><div style="flex:1;height:7px;background:var(--bg3);border-radius:3px"><div style="width:81%;height:100%;background:var(--orange);border-radius:3px"></div></div><span style="font-family:var(--f-mono);font-size:11px;color:var(--orange)">81%</span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:80px;font-size:12px">Facebook</span><div style="flex:1;height:7px;background:var(--bg3);border-radius:3px"><div style="width:67%;height:100%;background:var(--amber);border-radius:3px"></div></div><span style="font-family:var(--f-mono);font-size:11px;color:var(--amber)">67%</span></div>
+        </div>
+      </div>
+      <div class="insight">
+        <p>Reddit 語料庫最高頻引言（ClearWhiteSpace 2024–26）：<strong>「我的房租取決於一個我看不見也控制不了的系統。」</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 05: OF ECONOMICS ============ -->
+<div id="of-econ" class="full-bleed">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 05 — 成人平台經濟學</div>
+    <h2>OnlyFans 是<span class="or">極端冪律</span>市場</h2>
+    <p>2024年 OF GMV $72億，但 Gini 係數 0.85——比世界上最不平等的國家收入分配還極端。這個結構決定了誰需要 Adelphi。</p>
+  </div>
+  <div class="g2" style="margin-bottom:28px;align-items:start">
+    <div class="cbox">
+      <h3>OF 營收集中度（前N%創作者 佔總支付比例）</h3>
+      <div class="ct" style="height:280px"><canvas id="ofConcentChart"></canvas></div>
+    </div>
+    <div class="cbox">
+      <h3>創作者年收入分層（對數刻度，美元/年）</h3>
+      <div class="ct" style="height:280px"><canvas id="ofIncomeChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g4" style="margin-bottom:24px">
+    <div class="kpi" style="background:var(--bg3);border:1px solid var(--border)">
+      <div class="kpi-n" style="color:var(--orange)">$72億</div>
+      <div class="kpi-d">2024年 OF 平台 GMV（YoY +9.1%）</div>
+    </div>
+    <div class="kpi" style="background:var(--bg3);border:1px solid var(--border)">
+      <div class="kpi-n" style="color:var(--cyan)">460萬</div>
+      <div class="kpi-d">創作者數，用戶3.775億（1:82比例）</div>
+    </div>
+    <div class="kpi" style="background:var(--bg3);border:1px solid var(--border)">
+      <div class="kpi-n" style="color:var(--rose)">$131</div>
+      <div class="kpi-d">均創作者扣20%後月收（前10%月收$40,000+）</div>
+    </div>
+    <div class="kpi" style="background:var(--bg3);border:1px solid var(--border)">
+      <div class="kpi-n" style="color:var(--amber)">70-80%</div>
+      <div class="kpi-d">頂尖創作者營收來自DM（PPV/小費）而非訂閱費</div>
+    </div>
+  </div>
+
+  <div class="cbox">
+    <h3>OF 關鍵 KPI 基準表（依創作者等級）</h3>
+    <table>
+      <thead>
+        <tr><th>指標</th><th>產業均值</th><th>良好水準</th><th>精英水準</th><th>Adelphi 影響</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>月訂閱流失率</td><td>50–60%</td><td>25–30%</td><td><span class="badge b-green">&lt;20%</span></td><td>AI Retention Funnel 提升留存</td></tr>
+        <tr><td>PPV解鎖率</td><td>8–15%</td><td>22–35%</td><td><span class="badge b-green">&gt;40%</span></td><td>AI動態定價 + 分層推送</td></tr>
+        <tr><td>ARPU（每訂閱者月收）</td><td>$15–30</td><td>$40–80</td><td><span class="badge b-green">$80+</span></td><td>Whale CRM + 個人化 upsell</td></tr>
+        <tr><td>DM佔總收入比</td><td>40–60%</td><td>65–75%</td><td><span class="badge b-orange">70–80%</span></td><td>AI Chatter 24/7覆蓋</td></tr>
+        <tr><td>Welcome轉換（前72hr）</td><td>2–4%</td><td>5–8%</td><td><span class="badge b-green">&gt;10%</span></td><td>自動化 Welcome Funnel 序列</td></tr>
+        <tr><td>Reddit→OF轉換率</td><td>2–4%</td><td>8–12%</td><td><span class="badge b-orange">12%+</span></td><td>n8n Reddit排程 + 跨sub自動輪換</td></tr>
+        <tr><td>DMCA每週時數</td><td>5–10小時</td><td>2–3小時</td><td><span class="badge b-green">&lt;30分</span></td><td>自動掃描 + 一鍵申請模板</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 06: AI SOLUTIONS ============ -->
+<div id="ai-sol">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 06 — AI 解決方案矩陣</div>
+    <h2>痛點 → <span class="cy">AI 工作流</span>對應</h2>
+    <p>每個氣泡代表一個可在 n8n 實作的自動化工作流。橫軸=技術可行性，縱軸=創作者影響力，氣泡大小=每週節省工時。</p>
+  </div>
+  <div class="cbox" style="margin-bottom:28px">
+    <h3>AI解方優先矩陣（技術可行性 × 創作者影響力 × 節省工時）</h3>
+    <div class="ct" style="height:420px"><canvas id="aiMatrixChart"></canvas></div>
+    <div class="legend" style="margin-top:12px">
+      <div class="leg"><div class="leg-dot" style="background:var(--orange)"></div>主流創作者優先</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--cyan)"></div>成人創作者優先</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--violet)"></div>雙軌通用</div>
+    </div>
+  </div>
+
+  <div class="g2" style="align-items:start;margin-bottom:28px">
+    <div class="cbox">
+      <h3>API 可行性現實檢查</h3>
+      <table>
+        <thead><tr><th>平台</th><th>官方 API</th><th>n8n 接入方式</th></tr></thead>
+        <tbody>
+          <tr><td>YouTube Data API v3</td><td><span class="badge b-green">✓ 免費</span></td><td>原生節點，quota 1萬/日</td></tr>
+          <tr><td>Instagram Graph API</td><td><span class="badge b-amber">⚠ 商業</span></td><td>被動DM回覆；Story發佈受限</td></tr>
+          <tr><td>TikTok API</td><td><span class="badge b-amber">⚠ 審核</span></td><td>需 Meta 認證；無留言自動回覆</td></tr>
+          <tr><td>X / Twitter API</td><td><span class="badge b-amber">💰 付費</span></td><td>Basic $100/月；Pro $5,000/月</td></tr>
+          <tr><td>Patreon API</td><td><span class="badge b-green">✓ REST</span></td><td>n8n 原生節點 + Webhook</td></tr>
+          <tr><td>OnlyFans / Fansly</td><td><span class="badge b-red">✗ 無官方</span></td><td>OnlyFansAPI.com 第三方節點（有 n8n community node）</td></tr>
+        </tbody>
+      </table>
+      <div class="insight" style="margin-bottom:0">
+        <p>Adelphi 核心策略：<strong>Human-in-loop Assist 模式</strong>——Telegram/Slack 一鍵批准，合規風險由客戶承擔，Adelphi 提供基礎設施。</p>
+      </div>
+    </div>
+    <div class="cbox">
+      <h3>推薦模型路由（Adelphi 三引擎設計）</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:12px 14px;background:rgba(255,107,53,0.07);border:1px solid rgba(255,107,53,0.2);border-radius:8px">
+          <div style="font-family:var(--f-mono);font-size:10px;color:var(--orange);margin-bottom:5px">主力引擎</div>
+          <div style="font-size:13px;font-weight:600">Claude Opus/Sonnet</div>
+          <div style="font-size:11.5px;color:var(--text2);margin-top:3px">品牌語氣、長上下文、合規判斷</div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:8px">
+          <div style="font-family:var(--f-mono);font-size:10px;color:var(--cyan);margin-bottom:5px">大量任務引擎</div>
+          <div style="font-size:13px;font-weight:600">GPT-4o / Gemini Flash</div>
+          <div style="font-size:11.5px;color:var(--text2);margin-top:3px">Caption批量生成、Analytics摘要、成本最優化</div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.2);border-radius:8px">
+          <div style="font-family:var(--f-mono);font-size:10px;color:var(--violet);margin-bottom:5px">成人聊天引擎（未審查）</div>
+          <div style="font-size:13px;font-weight:600">OpenRouter → Hermes / Mistral-Large</div>
+          <div style="font-size:11.5px;color:var(--text2);margin-top:3px">粉絲 DM、GFE 個人化、PPV 文案（自架部署）</div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(10,191,163,0.06);border:1px solid rgba(10,191,163,0.2);border-radius:8px">
+          <div style="font-family:var(--f-mono);font-size:10px;color:var(--teal);margin-bottom:5px">向量記憶引擎</div>
+          <div style="font-size:13px;font-weight:600">Qdrant（自架）+ OpenAI Embeddings</div>
+          <div style="font-size:11.5px;color:var(--text2);margin-top:3px">粉絲歷史RAG、品牌語氣一致性、Vault智慧推薦</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 07: WORKFLOWS ============ -->
+<div id="workflows" class="full-bleed">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 07 — n8n 優先工作流</div>
+    <h2>Adelphi 第一批<span class="or">發行的 12 個</span>工作流模板</h2>
+    <p>依 ROI × 技術可行性排序。每個工作流對應一個具體痛點，並標示替代哪些 SaaS。</p>
+  </div>
+
+  <div class="wf-grid" id="wf-grid"></div>
+
+  <div style="margin-top:36px">
+    <div class="sh-num" style="margin-bottom:16px">優先級矩陣（影響力 × 實作難度）</div>
+    <div class="pmatrix">
+      <div class="pm-cell pm-q1">
+        <div class="pm-label">🚀 立即發行 — 高影響 × 低難度</div>
+        <div class="pm-items">
+          <div class="pm-item">01 長片→短片工廠</div>
+          <div class="pm-item">04 週Analytics摘要</div>
+          <div class="pm-item">08 趨勢選題生成器</div>
+          <div class="pm-item">10 留言毒性把關</div>
+          <div class="pm-item">02 AI SEO + Metadata</div>
+        </div>
+      </div>
+      <div class="pm-cell pm-q2" style="background:rgba(132,204,22,0.04)">
+        <div class="pm-label" style="color:var(--lime)">⭐ 重點建設 — 高影響 × 高難度</div>
+        <div class="pm-items">
+          <div class="pm-item">05 OF AI Chatter（成人）</div>
+          <div class="pm-item">06 多平台再製Pipeline</div>
+          <div class="pm-item">03 OF Whale重激活</div>
+          <div class="pm-item">07 PPV動態定價</div>
+        </div>
+      </div>
+      <div class="pm-cell pm-q3" style="background:rgba(0,212,255,0.03)">
+        <div class="pm-label" style="color:var(--cyan)">📦 填充功能 — 低影響 × 低難度</div>
+        <div class="pm-items">
+          <div class="pm-item">12 縮圖A/B輪換</div>
+          <div class="pm-item">09 IG留言→DM Funnel</div>
+        </div>
+      </div>
+      <div class="pm-cell pm-q4">
+        <div class="pm-label">📋 後期建設 — 低影響 × 高難度</div>
+        <div class="pm-items">
+          <div class="pm-item">11 品牌外展CRM</div>
+          <div class="pm-item">DMCA自動掃蕩</div>
+          <div class="pm-item">稅務記帳整合</div>
+        </div>
+      </div>
+    </div>
+    <div class="pm-axis" style="max-width:100%;margin-top:8px">
+      <span>← 低難度（快速開發）</span>
+      <span style="font-size:11px;color:var(--text3);font-family:var(--f-mono)">← 實作難度 →</span>
+      <span>高難度 →</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 08: COST ============ -->
+<div id="cost">
+<div class="page">
+  <div class="sh">
+    <div class="sh-num">Section 08 — 競品成本對比</div>
+    <h2>Adelphi 的<span class="or">3–5倍</span>成本優勢</h2>
+    <p>典型中等創作者的 SaaS 工具堆疊月費 $200+，Adelphi 自架方案（n8n + LLM API）月費 $50–80，且創作者完全擁有自己的資料。</p>
+  </div>
+
+  <div class="g2" style="align-items:start;margin-bottom:28px">
+    <div class="cbox">
+      <h3>月費對比（美元/月）</h3>
+      <div class="ct" style="height:300px"><canvas id="costChart"></canvas></div>
+    </div>
+    <div>
+      <div class="cost-vs">
+        <div class="cost-col">
+          <div class="cost-col-header" style="color:var(--rose)">典型 SaaS 堆疊</div>
+          <div class="cost-item"><span class="cost-item-name">VidIQ（SEO分析）</span><span class="cost-item-price" style="color:var(--text2)">$49</span></div>
+          <div class="cost-item"><span class="cost-item-name">Opus Clip（短片）</span><span class="cost-item-price" style="color:var(--text2)">$29</span></div>
+          <div class="cost-item"><span class="cost-item-name">Jasper（文案）</span><span class="cost-item-price" style="color:var(--text2)">$39</span></div>
+          <div class="cost-item"><span class="cost-item-name">Buffer（排程）</span><span class="cost-item-price" style="color:var(--text2)">$18</span></div>
+          <div class="cost-item"><span class="cost-item-name">Repurpose.io（再製）</span><span class="cost-item-price" style="color:var(--text2)">$25</span></div>
+          <div class="cost-item"><span class="cost-item-name">Submagic（字幕）</span><span class="cost-item-price" style="color:var(--text2)">$25</span></div>
+          <div class="cost-item"><span class="cost-item-name">ManyChat（DM）</span><span class="cost-item-price" style="color:var(--text2)">$15</span></div>
+          <div class="cost-total" style="background:rgba(255,78,139,0.1);border:1px solid rgba(255,78,139,0.25)"><span>每月合計</span><span style="color:var(--rose)">$200+</span></div>
+        </div>
+        <div class="cost-divider">
+          <div class="vs-badge">VS</div>
+        </div>
+        <div class="cost-col">
+          <div class="cost-col-header" style="color:var(--lime)">Adelphi（n8n 自架）</div>
+          <div class="cost-item"><span class="cost-item-name">n8n Cloud</span><span class="cost-item-price" style="color:var(--text2)">$20</span></div>
+          <div class="cost-item"><span class="cost-item-name">LLM API（Claude/GPT）</span><span class="cost-item-price" style="color:var(--text2)">$20–40</span></div>
+          <div class="cost-item"><span class="cost-item-name">圖像/影片 API</span><span class="cost-item-price" style="color:var(--text2)">$5–15</span></div>
+          <div class="cost-item"><span class="cost-item-name">Qdrant（自架向量庫）</span><span class="cost-item-price" style="color:var(--teal)">免費</span></div>
+          <div class="cost-item"><span class="cost-item-name">其他 API 費用</span><span class="cost-item-price" style="color:var(--text2)">$5–10</span></div>
+          <div class="cost-item" style="background:transparent;border:none;min-height:40px"></div>
+          <div class="cost-item" style="background:transparent;border:none;min-height:40px"></div>
+          <div class="cost-total" style="background:rgba(132,204,22,0.1);border:1px solid rgba(132,204,22,0.25)"><span>每月合計</span><span style="color:var(--lime)">$50–80</span></div>
+        </div>
+      </div>
+      <div class="savings-box" style="margin-top:16px">
+        <div class="savings-n">省下 $120–150/月</div>
+        <div class="savings-d">年省 $1,440–$1,800／每個創作者帳戶<br>且創作者完全擁有資料，無平台鎖定風險</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Adelphi 七大競爭壁壘</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+      <div style="padding:12px 14px;background:var(--bg3);border-radius:7px;display:flex;gap:10px;align-items:start"><span style="color:var(--orange);font-size:14px">①</span><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">統一創作者 OS（會生成內容）</div><div style="font-size:11.5px;color:var(--text2)">現有 SaaS 只排程不生成；Adelphi 一個輸入 fan-out 到 8 種格式</div></div></div>
+      <div style="padding:12px 14px;background:var(--bg3);border-radius:7px;display:flex;gap:10px;align-items:start"><span style="color:var(--cyan);font-size:14px">②</span><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">成人創作者友善基礎設施</div><div style="font-size:11.5px;color:var(--text2)">主流工具禁止成人內容；n8n 自架天然合規隔離</div></div></div>
+      <div style="padding:12px 14px;background:var(--bg3);border-radius:7px;display:flex;gap:10px;align-items:start"><span style="color:var(--violet);font-size:14px">③</span><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">創作者擁有資料的 Fan CRM</div><div style="font-size:11.5px;color:var(--text2)">Supercreator/OnlyMonster 是 SaaS 鎖定；Adelphi 自架 Postgres 創作者完整擁有</div></div></div>
+      <div style="padding:12px 14px;background:var(--bg3);border-radius:7px;display:flex;gap:10px;align-items:start"><span style="color:var(--teal);font-size:14px">④</span><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Human-in-loop 合規護城河</div><div style="font-size:11.5px;color:var(--text2)">Telegram/Slack 一鍵批准；符合 OF TOS「Assist 模式」</div></div></div>
+      <div style="padding:12px 14px;background:var(--bg3);border-radius:7px;display:flex;gap:10px;align-items:start"><span style="color:var(--amber);font-size:14px">⑤</span><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">3–5倍成本優勢</div><div style="font-size:11.5px;color:var(--text2)">SaaS 堆疊 $200+/月 vs Adelphi $50–80/月</div></div></div>
+      <div style="padding:12px 14px;background:var(--bg3);border-radius:7px;display:flex;gap:10px;align-items:start"><span style="color:var(--lime);font-size:14px">⑥</span><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Fanvue/Fansly 工具荒</div><div style="font-size:11.5px;color:var(--text2)">多數成人工具以 OF 為先；其他平台是先行者機會</div></div></div>
+      <div style="padding:12px 14px;background:var(--bg3);border-radius:7px;display:flex;gap:10px;align-items:start"><span style="color:var(--rose);font-size:14px">⑦</span><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">抗 Burnout 設計敘事</div><div style="font-size:11.5px;color:var(--text2)">直接對應 73–90% 的 Burnout 比例，作為核心行銷主張</div></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>ADELPHI</strong> 創作者 AI 自動化研究報告 · 2026 年 4 月 · 基於 Linktree、Epidemic Sound、Adobe、Goldman Sachs、Vibely、Awin、NeoReach、OnlyFansAPI、SirenCY 等 30+ 來源</p>
+  <p style="margin-top:8px">本報告為 <strong>愛德菲斯（Adelphi）</strong> n8n 項目內部研究文件，機密勿外流</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// TICKER
+// ═══════════════════════════════════════════
+const tickerData = [
+  '90% 創作者曾經歷 Burnout',
+  '全球創作者經濟估值突破 $2,000 億美元',
+  '創作者僅 46% 時間花在真正創作',
+  '86% 全球創作者使用生成式 AI',
+  '73% 成人創作者遭遇內容盜竊，月損 $3,000–$8,000',
+  'OnlyFans 2024 GMV $72億，但後80%創作者月收不足 $50',
+  '典型 SaaS 工具堆疊 $200+/月｜Adelphi n8n 方案 $50–80/月',
+  '剪輯基準：每 1 分鐘成片 = 45–60 分鐘工時',
+  '71% 創作者曾考慮放棄創作事業',
+  'OF 前 0.01% 創作者（365人）佔平台總營收 6.8%',
+  '成人創作者 70–80% 收入來自 DM，非訂閱費',
+  '只有 12% 全職創作者年收超過 $50,000',
+  'Adelphi 核心主張：讓創作者只需專注在創作本身'
+];
+const t = document.getElementById('ticker-inner');
+const allItems = [...tickerData,...tickerData].map(d=>`<span class="t-item">◆ ${d}</span>`).join('');
+t.innerHTML = allItems;
+
+// ═══════════════════════════════════════════
+// COUNTER ANIMATION
+// ═══════════════════════════════════════════
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=+el.dataset.count;
+    const suffix=el.dataset.suffix||'';
+    const duration=1800;
+    const start=performance.now();
+    function step(now){
+      const t=Math.min((now-start)/duration,1);
+      const eased=1-Math.pow(1-t,3);
+      const val=Math.round(eased*target);
+      el.textContent=val+suffix;
+      if(t<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+setTimeout(animateCounters,400);
+
+// ═══════════════════════════════════════════
+// HEATMAP
+// ═══════════════════════════════════════════
+const hDays=['一','二','三','四','五','六','日'];
+const hRows=[
+  {label:'趨勢監測/靈感',vals:[3,2,3,2,3,1,4]},
+  {label:'腳本/企劃',vals:[4,3,2,2,1,0,5]},
+  {label:'拍攝/錄製',vals:[0,5,4,4,1,3,0]},
+  {label:'剪輯後製',vals:[1,3,5,5,4,0,0]},
+  {label:'縮圖/字幕',vals:[0,1,3,5,2,0,0]},
+  {label:'發佈/排程',vals:[2,2,3,4,3,2,1]},
+  {label:'社群互動/DM',vals:[3,3,3,3,4,2,2]},
+  {label:'Analytics檢視',vals:[1,1,2,2,4,1,3]},
+  {label:'品牌外展',vals:[3,2,1,1,3,0,0]},
+  {label:'行政/財務',vals:[1,1,1,1,2,0,2]},
+];
+const labels=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const hmWrap=document.getElementById('heatmap');
+const headRow=document.createElement('div');headRow.className='hmap-head';
+headRow.innerHTML='<div></div>'+hDays.map(d=>`<div class="hmap-col-label">週${d}</div>`).join('');
+hmWrap.appendChild(headRow);
+hRows.forEach(row=>{
+  const r=document.createElement('div');r.className='hmap-row';
+  let html=`<div class="hmap-row-label">${row.label}</div>`;
+  row.vals.forEach(v=>{
+    html+=`<div class="hmap-cell h${v}" title="${row.label} - 強度 ${v}/5">${v>0?'▮▮▮▮▮'.slice(0,v):''}</div>`;
+  });
+  r.innerHTML=html;hmWrap.appendChild(r);
+});
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
+document.querySelectorAll('#pain-tabs .tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#pain-tabs .tab').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById('pain-main').style.display=btn.dataset.target==='pain-main'?'block':'none';
+    document.getElementById('pain-adult').style.display=btn.dataset.target==='pain-adult'?'block':'none';
+  });
+});
+
+// ═══════════════════════════════════════════
+// WORKFLOW CARDS
+// ═══════════════════════════════════════════
+const workflows=[
+  {n:'01',t:'長片 → 短片工廠',d:'yt-dlp下載 → Whisper轉錄 → Claude評分視窗 → FFmpeg切割 → 字幕疊加 → 多平台上傳',tags:[{l:'主流',c:'t-or'},{l:'YouTube→Reels/Shorts',c:'t-cy'},{l:'取代 Opus Clip + Submagic',c:'t-tl'}]},
+  {n:'02',t:'AI SEO + Metadata Pipeline',d:'上傳觸發 → 抓競品 SERP → Claude 改寫標題/描述/標籤 → A/B 輸出版本',tags:[{l:'主流',c:'t-or'},{l:'取代 VidIQ',c:'t-tl'},{l:'高可行性',c:'t-am'}]},
+  {n:'03',t:'OF Whale 重激活機器人',d:'Postgres 粉絲分層 → 識別90天未互動 whale → 個人化語音/文字訊息 → Telegram 批准 → 傳送',tags:[{l:'成人',c:'t-rs'},{l:'OnlyFansAPI',c:'t-cy'},{l:'最高 ROI',c:'t-am'}]},
+  {n:'04',t:'週 Analytics 摘要',d:'Cron 每週 → 抓全平台指標 → WoW 差異計算 → Claude 白話摘要 + 3個行動建議 → Email/Slack',tags:[{l:'雙軌通用',c:'t-vi'},{l:'取代 Spreadsheet',c:'t-tl'},{l:'解決焦慮刷後台',c:'t-or'}]},
+  {n:'05',t:'OF AI Chatter Assist',d:'Webhook → 粉絲歷史 RAG → Claude 生成3個回覆候選 → 信心閾值閘門 → Telegram 一鍵批准',tags:[{l:'成人',c:'t-rs'},{l:'24/7覆蓋',c:'t-cy'},{l:'Human-in-loop',c:'t-am'}]},
+  {n:'06',t:'多平台再製 Pipeline',d:'一個輸入 → Claude fan-out → 8種格式（Thread/Carousel/Newsletter/TikTok/Pin/Email...）→ 各平台排程',tags:[{l:'雙軌通用',c:'t-vi'},{l:'最大差異化',c:'t-or'},{l:'無現有競品',c:'t-am'}]},
+  {n:'07',t:'PPV 動態定價優化器',d:'粉絲消費歷史 → Code節點分層 → 為各層生成差異化PPV定價 + 文案 → A/B 智慧群發',tags:[{l:'成人',c:'t-rs'},{l:'解鎖率提升',c:'t-tl'},{l:'OnlyFansAPI',c:'t-cy'}]},
+  {n:'08',t:'趨勢驅動選題生成器',d:'每日 Cron → Google Trends + Reddit + YT Trending → 嵌入去重 → Claude 提10個選題 → Notion',tags:[{l:'主流',c:'t-or'},{l:'解決靈感枯竭',c:'t-tl'},{l:'高可行性',c:'t-am'}]},
+  {n:'09',t:'IG 留言 → DM Funnel',d:'IG Webhook → 關鍵字觸發（如「連結」）→ ManyChat/IG API 自動私訊 → 附 Linktree/OF Link',tags:[{l:'成人',c:'t-rs'},{l:'主要引流管道',c:'t-or'},{l:'Instagram API',c:'t-cy'}]},
+  {n:'10',t:'留言毒性把關 + 自動回覆',d:'平台 Webhook → Perspective API 評分 → <0.4 自動回覆 / 0.4–0.7 標記 / >0.7 自動隱藏',tags:[{l:'雙軌通用',c:'t-vi'},{l:'高可行性',c:'t-am'},{l:'心理健康防護',c:'t-tl'}]},
+  {n:'11',t:'品牌外展 CRM + 冷信',d:'Apollo/Hunter 找聯絡人 → 模板化冷信 → Gmail 排程 → 追蹤回信 → Airtable Pipeline 更新',tags:[{l:'主流',c:'t-or'},{l:'取代 10–15小時/週',c:'t-tl'},{l:'Gmail API',c:'t-cy'}]},
+  {n:'12',t:'縮圖 A/B 自動輪換',d:'Flux/Ideogram 生成多版縮圖 → YouTube videos.update API 輪換 → 24小時後取 CTR → 7天鎖定贏家',tags:[{l:'主流',c:'t-or'},{l:'CTR 提升',c:'t-tl'},{l:'YouTube API',c:'t-cy'}]},
+];
+const wfGrid=document.getElementById('wf-grid');
+workflows.forEach(w=>{
+  const card=document.createElement('div');card.className='wf-card';
+  card.innerHTML=`<div class="wf-n">工作流 ${w.n}</div><div class="wf-t">${w.t}</div><div class="wf-d">${w.d}</div><div class="wf-tags">${w.tags.map(tg=>`<span class="tag ${tg.c}">${tg.l}</span>`).join('')}</div>`;
+  wfGrid.appendChild(card);
+});
+
+// ═══════════════════════════════════════════
+// CHART.JS GLOBAL DEFAULTS
+// ═══════════════════════════════════════════
+Chart.defaults.color='#9B9AA8';
+Chart.defaults.font.family="'IBM Plex Sans', sans-serif";
+Chart.defaults.font.size=11;
+
+const COLORS={orange:'#FF6B35',cyan:'#00D4FF',violet:'#7C3AED',teal:'#0ABFA3',rose:'#FF4E8B',amber:'#FFAD0D',lime:'#84CC16',blue:'#3B82F6',text2:'#9B9AA8',bg3:'#161628',border:'rgba(255,255,255,0.07)'};
+
+// MARKET GROWTH LINE
+new Chart(document.getElementById('marketChart'),{
+  type:'line',
+  data:{
+    labels:['2019','2020','2021','2022','2023','2024','2025*','2026*','2027*','2030*'],
+    datasets:[{
+      label:'市場規模（億美元）',
+      data:[480,800,1040,1500,1916,2040,2550,3200,4800,5280],
+      borderColor:COLORS.orange,
+      backgroundColor:'rgba(255,107,53,0.08)',
+      pointBackgroundColor:COLORS.orange,
+      pointRadius:4,fill:true,tension:0.4,borderWidth:2
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.parsed.y.toLocaleString()}億`}}},scales:{x:{grid:{color:COLORS.border}},y:{grid:{color:COLORS.border},ticks:{callback:v=>`$${v}`}}}}
+});
+
+// INCOME DONUT (creator economy general)
+new Chart(document.getElementById('incomeDonutChart'),{
+  type:'doughnut',
+  data:{
+    labels:['年收 >$10萬','$5萬-$10萬','$1萬-$5萬','年收 <$1萬'],
+    datasets:[{data:[4,8,22,66],backgroundColor:['#FF6B35','#FFAD0D','#7C3AED','#2D2D3D'],borderWidth:0,hoverBorderColor:'#ffffff',hoverBorderWidth:2}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed}%`}}}}
+});
+
+// TIME ALLOCATION DOUGHNUT
+new Chart(document.getElementById('timeChart'),{
+  type:'doughnut',
+  data:{
+    labels:['內容創作','分發/推廣','行銷/銷售','行政/營運','其他'],
+    datasets:[{
+      data:[46,20,16,14,4],
+      backgroundColor:['#FF6B35','#00D4FF','#7C3AED','#FFAD0D','#2D2D3D'],
+      borderWidth:0,hoverBorderColor:'#ffffff',hoverBorderWidth:2
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true,pointStyleWidth:8}},tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed}%`}}}}
+});
+
+// PAIN MAIN HORIZONTAL BAR
+new Chart(document.getElementById('painMainChart'),{
+  type:'bar',
+  data:{
+    labels:['演算法依賴/曝光焦慮','Burnout / 無法斷線','剪輯黑洞','Caption/SEO重複勞動','跨平台再製負擔','發文一致性壓力','負評/騷擾DM管理','指標綁架自我價值','收入波動不穩','技能缺口'],
+    datasets:[{
+      label:'嚴重度評分',
+      data:[9.2,9.0,8.5,7.8,7.5,7.2,6.8,6.5,6.2,5.8],
+      backgroundColor:ctx=>{const v=ctx.raw;return v>=9?COLORS.rose:v>=8?COLORS.orange:v>=7?COLORS.amber:COLORS.cyan},
+      borderRadius:4,borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`嚴重度: ${c.parsed.x} / 10`}}},
+    scales:{x:{min:0,max:10,grid:{color:COLORS.border},ticks:{callback:v=>v+'/10'}},y:{grid:{display:false},ticks:{font:{size:10}}}}
+  }
+});
+
+// PAIN ADULT HORIZONTAL BAR
+new Chart(document.getElementById('painAdultChart'),{
+  type:'bar',
+  data:{
+    labels:['DM過載/個人化規模化','銀行/支付商摩擦','身份保護/doxxing','24/7 Burnout','內容盜竊/DMCA','平台合規波動','Whale集中/收入波動','心理健康/寄生社交','跨平台SFW限制','Welcome Funnel流失','PPV定價優化','稅務複雜度','經紀公司OFMA動態','客製訂單管理','多平台一致性'],
+    datasets:[{
+      label:'嚴重度評分',
+      data:[9.8,9.8,9.5,9.5,9.2,9.0,9.0,8.5,8.5,8.0,8.0,7.5,7.5,7.0,7.0],
+      backgroundColor:ctx=>{const v=ctx.raw;return v>=9.5?COLORS.rose:v>=9?COLORS.orange:v>=8?COLORS.amber:COLORS.cyan},
+      borderRadius:4,borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`嚴重度: ${c.parsed.x} / 10`}}},
+    scales:{x:{min:0,max:10,grid:{color:COLORS.border},ticks:{callback:v=>v+'/10'}},y:{grid:{display:false},ticks:{font:{size:10}}}}
+  }
+});
+
+// BURNOUT RADAR
+new Chart(document.getElementById('burnoutChart'),{
+  type:'radar',
+  data:{
+    labels:['演算法壓力','生計焦慮','永遠在線','追蹤者焦慮','仇恨/騷擾','冒名症候群'],
+    datasets:[{
+      label:'Burnout 驅動比例 %',
+      data:[65,59,51,51,42,29],
+      backgroundColor:'rgba(255,107,53,0.15)',
+      borderColor:COLORS.orange,
+      pointBackgroundColor:COLORS.orange,
+      pointRadius:4,borderWidth:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{r:{min:0,max:100,grid:{color:COLORS.border},angleLines:{color:COLORS.border},pointLabels:{font:{size:11}},ticks:{stepSize:20,callback:v=>v+'%',backdropColor:'transparent',color:COLORS.text2}}}
+  }
+});
+
+// OF CONCENTRATION DONUT
+new Chart(document.getElementById('ofConcentChart'),{
+  type:'doughnut',
+  data:{
+    labels:['前0.01%（365人）','前0.09%','前0.9%','前9%','後90%'],
+    datasets:[{
+      data:[6.8,8.2,18,40,27],
+      backgroundColor:['#FF4E8B','#FF6B35','#FFAD0D','#7C3AED','#1f1f2e'],
+      borderWidth:0,hoverBorderColor:'#fff',hoverBorderWidth:2
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{padding:10,usePointStyle:true,pointStyleWidth:8,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: 佔總支付${c.parsed}%`}}}}
+});
+
+// OF INCOME BY TIER
+new Chart(document.getElementById('ofIncomeChart'),{
+  type:'bar',
+  data:{
+    labels:['後80%','前20–10%','前10–1%','前1–0.1%','前0.1–0.01%','前0.01%'],
+    datasets:[{
+      label:'估算年收入（美元）',
+      data:[600,2400,6000,49000,220000,1000000],
+      backgroundColor:['#2D2D3D','#374151','#7C3AED','#FFAD0D','#FF6B35','#FF4E8B'],
+      borderRadius:6,borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`年收: $${c.parsed.y.toLocaleString()}`}}},
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:9}}},
+      y:{type:'logarithmic',grid:{color:COLORS.border},ticks:{callback:v=>{if(v>=1000000)return'$1M+';if(v>=1000)return'$'+(v/1000)+'K';return'$'+v}}}
+    }
+  }
+});
+
+// AI MATRIX BUBBLE
+new Chart(document.getElementById('aiMatrixChart'),{
+  type:'bubble',
+  data:{
+    datasets:[
+      {
+        label:'主流優先',
+        backgroundColor:'rgba(255,107,53,0.5)',
+        borderColor:COLORS.orange,
+        data:[
+          {x:8,y:9,r:15,name:'長片→短片工廠'},
+          {x:9,y:8,r:9,name:'AI SEO+Metadata'},
+          {x:9,y:7,r:6,name:'週Analytics摘要'},
+          {x:9,y:7,r:6,name:'趨勢選題生成'},
+          {x:9,y:6,r:3,name:'留言毒性把關'},
+          {x:8,y:8,r:6,name:'縮圖A/B輪換'},
+        ]
+      },
+      {
+        label:'成人優先',
+        backgroundColor:'rgba(0,212,255,0.4)',
+        borderColor:COLORS.cyan,
+        data:[
+          {x:7,y:10,r:24,name:'OF AI Chatter'},
+          {x:7,y:9,r:12,name:'OF Whale重激活'},
+          {x:6,y:8,r:9,name:'PPV動態定價'},
+          {x:7,y:7,r:6,name:'IG→DM Funnel'},
+        ]
+      },
+      {
+        label:'雙軌通用',
+        backgroundColor:'rgba(124,58,237,0.45)',
+        borderColor:COLORS.violet,
+        data:[
+          {x:8,y:9,r:18,name:'多平台再製Pipeline'},
+          {x:8,y:7,r:12,name:'品牌外展CRM'},
+        ]
+      }
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top'},
+      tooltip:{callbacks:{
+        label:ctx=>{
+          const d=ctx.raw;
+          const hrs=Math.round(d.r/3);
+          return `${d.name||''} | 可行性:${d.x} 影響:${d.y} 省${hrs}小時/週`;
+        }
+      }}
+    },
+    scales:{
+      x:{min:5,max:10,title:{display:true,text:'技術可行性',color:COLORS.text2},grid:{color:COLORS.border},ticks:{callback:v=>{const l={5:'困難',6:'可行',7:'良好',8:'高',9:'極高',10:'完美'};return l[v]||v}}},
+      y:{min:5,max:11,title:{display:true,text:'創作者影響力',color:COLORS.text2},grid:{color:COLORS.border},ticks:{callback:v=>{const l={5:'低',6:'中',7:'良',8:'高',9:'很高',10:'最高',11:''};return l[v]||v}}}
+    }
+  }
+});
+
+// COST COMPARISON BAR
+new Chart(document.getElementById('costChart'),{
+  type:'bar',
+  data:{
+    labels:['影片切割','SEO/Analytics','文案/AI生成','排程發佈','多平台再製','字幕生成','DM自動化','自動化基礎'],
+    datasets:[
+      {
+        label:'SaaS 堆疊',
+        data:[29,49,39,18,25,25,15,0],
+        backgroundColor:'rgba(255,78,139,0.6)',
+        borderColor:COLORS.rose,borderWidth:1,borderRadius:4,borderSkipped:false
+      },
+      {
+        label:'Adelphi（n8n）',
+        data:[0,0,10,0,0,0,0,20],
+        backgroundColor:'rgba(132,204,22,0.6)',
+        borderColor:COLORS.lime,borderWidth:1,borderRadius:4,borderSkipped:false
+      }
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>`${c.dataset.label}: $${c.parsed.y}/月`}}},
+    scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{stacked:false,grid:{color:COLORS.border},ticks:{callback:v=>'$'+v}}}
+  }
+});
+</script>
+</body>
+</html>
